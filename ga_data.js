@@ -3,25 +3,16 @@ var googleapis = require('googleapis'),
     fs = require('fs'),
     path = require('path');
 
+
+// Setup
 var config = require('./config');
-
-// Pre-load the keyfile from the OS
-// prevents errors when starting JWT
-var key;
-if (config.key)
-    key = config.key;
-else if (config.key_file && fs.existsSync(config.key_file))
-    key = fs.readFileSync(config.key_file);
-else key = null;
-
+key = fs.readFileSync(config.key_file);
 var jwt = new googleapis.auth.JWT(
     config.email,
     null,
     key,
     ['https://www.googleapis.com/auth/analytics.readonly']
 );
-
-
 var query = {
     "dimensions": "ga:eventLabel", //ga:eventAction,ga:eventCategory
     "metrics": "ga:totalEvents",
@@ -30,11 +21,11 @@ var query = {
     "start-date": "30daysAgo",
     "end-date": "today"
 };
-
 query.ids = config.account.ids;
 query.auth = jwt;
 api_call = ga.data.ga.get;
 
+// Analytics mod
 Analytics = {
 
     get_query: function(callback) {
@@ -58,4 +49,5 @@ Analytics = {
     }
 }
 
+// Export
 module.exports = Analytics;
