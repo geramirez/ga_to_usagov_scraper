@@ -21,6 +21,7 @@ var query = {
     "start-date": "30daysAgo",
     "end-date": "today"
 };
+
 query.ids = config.account.ids;
 query.auth = jwt;
 api_call = ga.data.ga.get;
