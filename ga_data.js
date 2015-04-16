@@ -18,7 +18,7 @@ var query = {
     "dimensions": "ga:pagePath",
     "metrics": "ga:users",
     "sort": "-ga:users",
-    "filters": "ga:pagePath=~/agencies/\?query=",
+    "filters": "ga:pagePath=~/agencies/.?query=",
     "start-date": "30daysAgo",
     "end-date": "today"
 };
@@ -45,8 +45,9 @@ Analytics = {
     clean_data: function(data) {
         var cleaned_data = [];
         for(row_num in data.rows){
-            if (data.rows[row_num][0].length > 17)
-                cleaned_data.push(data.rows[row_num][0]);
+            query = data.rows[row_num][0].replace('/agencies/?query=', '');
+            if (query.length > 3)
+                cleaned_data.push(decodeURIComponent(query).replace('+',''));
         }
         return cleaned_data;
     }
